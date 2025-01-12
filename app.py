@@ -46,7 +46,6 @@ class ModelLoader:
       required_files = [
         'config.json',
         'pytorch_model.bin',
-        'special_tokens_map.json',
         'tokenizer_config.json',
       ]
       return all(
@@ -198,7 +197,19 @@ def create_app() -> FastAPI:
 
   @app.post("/process")
   async def process_text(request: TextRequest):
-    """处理文本接口"""
+    """
+    处理文本接口
+      "summarize": "为下面的文章生成摘要：\n{}\n",
+      "qa": "问答：\n问题：{}\n答案：",
+      "sentiment": "情感分析：\n{}\n选项：积极，消极",
+      "rewrite": "生成与下列文字相同意思的句子：\n{}\n答案：",
+      "semantic_similar": "下面句子是否表示了相同的语义：\n文本1：{}\n文本2：{}\n选项：相似，不相似\n答案：",
+      "classification": "这是关于哪方面的新闻：\n{}\n选项：故事,文化,娱乐,体育,财经,房产,汽车,教育,科技,军事,旅游,国际,股票,农业,游戏",
+      "extract": "阅读文本抽取关键信息：\n{}\n问题：机构，人名，职位，籍贯，专业，国籍，学历，种族\n答案：",
+      "translate_en": "翻译成英文：\n{}\n答案：",
+      "correction": "文本纠错：\n{}\n答案：",
+      "inference": "推理关系判断：\n前提：{}\n假设：{}\n选项：矛盾，蕴含，中立\n答案："
+      """
     result = await service.process_text(request)
     return {"result": result}
 
